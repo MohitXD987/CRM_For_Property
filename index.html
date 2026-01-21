@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WhatsApp CRM</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <!-- LEFT PANEL -->
+  <div class="send-panel">
+    <h3>Send Message</h3>
+
+    <label>Phone Number</label>
+    <input id="phone" placeholder="91XXXXXXXXXX">
+
+    <label>Template</label>
+    <select id="template">
+      <option value="service_notification">Service Notification</option>
+    </select>
+
+    <label>Reference ID</label>
+    <input id="var1" placeholder="REQ12345">
+
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="chat-panel">
+    <h3>WhatsApp Chat</h3>
+    <div id="chat"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
