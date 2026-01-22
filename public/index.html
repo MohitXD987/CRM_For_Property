@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium WhatsApp CRM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8z" />
+                    </svg>
+                </div>
+                <span>CRM APP</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-tab="dashboard">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
+                    </svg>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-tab="leads">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                    </svg>
+                    <span>Leads</span>
+                </button>
+                <button class="nav-item" data-tab="inbox">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                    </svg>
+                    <span>Inbox</span>
+                </button>
+                <button class="nav-item" data-tab="broadcast">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z" />
+                    </svg>
+                    <span>Broadcast</span>
+                </button>
+                <button class="nav-item" onclick="location.href='templates.html'">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+                    </svg>
+                    <span>Templates</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h2 id="pageTitle">Dashboard Overview</h2>
+                <div class="top-bar-actions">
+                    <div id="connectionStatus" class="status-indicator online">API Connected</div>
+                    <button class="theme-btn" id="themeToggle" title="Toggle Theme">
+                        <svg style="width:20px;height:20px;fill:currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z" />
+                        </svg>
+                    </button>
+                    <button id="addLeadBtn" class="primary-btn">New Lead</button>
+                </div>
+            </header>
+
+            <div id="toastContainer"></div>
+
+            <!-- Inbox Section -->
+            <div id="inboxSection" class="tab-content">
+                <div class="inbox-container"
+                    style="display: grid; grid-template-columns: 300px 1fr; height: calc(100vh - 120px); background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <!-- Chat List -->
+                    <div class="chat-list" style="border-right: 1px solid #e9edef; overflow-y: auto;">
+                        <div style="padding: 16px; border-bottom: 1px solid #e9edef;">
+                            <input type="text" id="chatSearch" placeholder="Search chats..."
+                                style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #dee2e6;">
+                        </div>
+                        <div id="chatsContainer">
+                            <!-- Populated by JS -->
+                            <div style="padding: 40px 20px; text-align: center; color: #667781;">
+                                <svg viewBox="0 0 24 24"
+                                    style="width: 48px; height: 48px; fill: #d1d7db; margin-bottom: 12px;">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                </svg>
+                                <p>No active chats</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chat Window -->
+                    <div class="chat-window" id="chatWindow"
+                        style="display: flex; flex-direction: column; background: #efeae2;">
+                        <div id="noChatSelected"
+                            style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #667781;">
+                            <svg viewBox="0 0 24 24"
+                                style="width: 80px; height: 80px; fill: #d1d7db; margin-bottom: 16px;">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
+                            </svg>
+                            <h3>WhatsApp Web Preview</h3>
+                            <p>Select a contact to view conversation</p>
+                        </div>
+                        <div id="activeChat" style="display: none; flex: 1; flex-direction: column;">
+                            <div class="chat-header"
+                                style="padding: 10px 16px; background: #f0f2f5; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #d1d7db;">
+                                <div id="chatAvatar"
+                                    style="width: 40px; height: 40px; background: #d1d7db; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; color: #fff;">
+                                    ?</div>
+                                <div>
+                                    <div id="chatName" style="font-weight: 600; color: #111b21;">John Doe</div>
+                                    <div style="font-size: 11px; color: #667781;">online</div>
+                                </div>
+                            </div>
+                            <div id="chatMessages"
+                                style="flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+                                <!-- Messages go here -->
+                            </div>
+                            <div class="chat-input-area"
+                                style="padding: 10px 16px; background: #f0f2f5; display: flex; gap: 8px; align-items: center;">
+                                <input type="text" id="inboxReplyInput" placeholder="Type a message..."
+                                    style="flex: 1; padding: 10px 12px; border-radius: 8px; border: none; outline: none;">
+                                <button id="inboxReplyBtn"
+                                    style="background: var(--primary); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                                    <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: white;">
+                                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Broadcast Section -->
+            <div id="broadcastSection" class="tab-content">
+                <div style="display: grid; grid-template-columns: 350px 1fr; gap: 24px; align-items: start;">
+                    <!-- Left: Preview -->
+                    <div class="card" style="position: sticky; top: 20px;">
+                        <div class="card-header">
+                            <h3>Message Preview</h3>
+                        </div>
+                        <div class="message-preview-container"
+                            style="margin: 0; background: #e5ddd5; border: none; border-radius: 0; padding: 32px 16px;">
+                            <div id="broadcastPreviewBubble" class="whatsapp-bubble" style="max-width: 100%;">
+                                <p id="broadcastPreviewText">Type a message to see preview...</p>
+                                <div class="bubble-time">12:00 PM ✓✓</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Form -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Direct Broadcast</h3>
+                        </div>
+                        <div class="message-form">
+                            <div class="form-group">
+                                <label>Paste Phone Numbers (one per line or comma separated):</label>
+                                <textarea id="broadcastNumbers" placeholder="+1234567890&#10;+9876543210"
+                                    style="height: 120px;"></textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Message Type:</label>
+                                    <select id="broadcastMessageType">
+                                        <option value="text">Straight Text</option>
+                                        <option value="template">Official Template</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" id="broadcastTplGroup" style="display: none;">
+                                    <label>Template:</label>
+                                    <select id="broadcastTemplateName">
+                                        <option value="">Select Template</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="broadcastTextGroup">
+                                <textarea id="broadcastMessageText"
+                                    placeholder="Write your broadcast message..."></textarea>
+                            </div>
+                            <div id="broadcastTplVars" style="display: none; margin-bottom: 16px;">
+                                <div id="broadcastVarsInputs"></div>
+                            </div>
+                            <button id="startBroadcastBtn" class="send-btn" style="width: 100%;">Start Direct
+                                Broadcast</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Progress -->
+                <div id="broadcastProgress" class="card" style="display: none;">
+                    <div class="card-header">
+                        <h3>Broadcast Status</h3>
+                    </div>
+                    <div style="padding: 24px;">
+                        <div class="progress-bar-container"
+                            style="background: #eee; height: 10px; border-radius: 5px; margin-bottom: 12px;">
+                            <div id="broadcastProgressBar"
+                                style="background: var(--primary); height: 100%; width: 0%; border-radius: 5px; transition: width 0.3s;">
+                            </div>
+                        </div>
+                        <p id="broadcastStatusText" style="font-size: 13px; color: var(--text-light);">Sent 0 of 0
+                            messages</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dashboardSection" class="tab-content active">
+                <!-- Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Sent Today</h4>
+                            <div class="value" id="messagesSent">0</div>
+                        </div>
+                        <div class="metric-icon blue"><svg viewBox="0 0 24 24">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                            </svg></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Delivered</h4>
+                            <div class="value" id="messagesDelivered">0</div>
+                        </div>
+                        <div class="metric-icon green">
+                            <polyline points="20 6 9 17 4 12" />
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Total Leads</h4>
+                            <div class="value" id="totalLeads">0</div>
+                        </div>
+                        <div class="metric-icon purple">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Messaging Form -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Quick Send</h3>
+                        </div>
+                        <div class="message-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Recipient:</label>
+                                    <input type="text" id="phoneNumber" placeholder="+91XXXXXXXXXX">
+                                </div>
+                                <div class="form-group">
+                                    <label>Type:</label>
+                                    <select id="messageType">
+                                        <option value="text">Straight Text</option>
+                                        <option value="template">Official Template</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="textMessageForm">
+                                <textarea id="messageText" placeholder="Write your message..."></textarea>
+                            </div>
+
+                            <div id="templateMessageForm" style="display: none;">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Template:</label>
+                                        <select id="templateName">
+                                            <option>Select Template</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Lang:</label>
+                                        <select id="templateLanguage">
+                                            <option value="en_US">English (US)</option>
+                                            <option value="en">English</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="templateVariables" style="display: none;">
+                                    <div id="variablesInputs"></div>
+                                </div>
+                            </div>
+
+                            <!-- Real-time Preview Section -->
+                            <div class="message-preview-container"
+                                style="margin-top: 20px; padding: 16px; background: #e5ddd5; border-radius: 12px; border: 1px solid #d1d7db;">
+                                <div
+                                    style="font-size: 11px; font-weight: 600; color: #667781; margin-bottom: 8px; text-transform: uppercase;">
+                                    Real-time Preview</div>
+                                <div id="messagePreview" class="whatsapp-bubble"
+                                    style="background: white; padding: 8px 12px; border-radius: 8px; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); position: relative; max-width: 90%; font-size: 14.5px; line-height: 1.5; color: #111b21;">
+                                    <p id="previewText" style="margin: 0; white-space: pre-wrap;">Type a message to see
+                                        preview...</p>
+                                    <div style="font-size: 11px; color: #667781; text-align: right; margin-top: 4px;">
+                                        12:00 PM ✓✓</div>
+                                </div>
+                            </div>
+
+                            <button id="sendMessageBtn" class="send-btn" style="margin-top: 20px;">Send WhatsApp
+                                Message</button>
+                        </div>
+                    </div>
+
+                    <!-- Activity Log -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Communication Log</h3>
+                            <button id="clearLogBtn" class="text-btn">Clear</button>
+                        </div>
+                        <div id="activityLog" class="activity-log">
+                            <p class="log-empty">Waiting for activity...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leads Section -->
+            <div id="leadsSection" class="tab-content">
+                <div class="card">
+                    <div class="leads-toolbar">
+                        <div class="search-box">
+                            <input type="text" id="leadSearch" placeholder="Search leads...">
+                        </div>
+                        <div class="filter-actions" style="display: flex; gap: 12px;">
+                            <select id="statusFilter" style="width: auto;">
+                                <option value="all">All Status</option>
+                                <option value="New">New</option>
+                                <option value="Contacted">Contacted</option>
+                                <option value="Warm">Warm</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                            <button onclick="window.exportLeadsCSV()" class="primary-btn"
+                                style="background: var(--secondary); height: 38px;">
+                                Export CSV
+                            </button>
+                        </div>
+                    </div>
+                    <table class="leads-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Last Contact</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leadsTableBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Campaigns Section -->
+                <div id="campaignsSection" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Bulk Message Campaign</h3>
+                        </div>
+                        <div class="message-form">
+                            <p style="margin-bottom: 16px; color: var(--text-light); font-size: 14px;">
+                                Send a message to all leads at once. Filter your leads before starting the campaign.
+                            </p>
+                            <div class="form-group">
+                                <label>Select Target Group:</label>
+                                <select id="campaignFilter">
+                                    <option value="all">All Leads</option>
+                                    <option value="New">New Leads Only</option>
+                                    <option value="Warm">Warm Leads Only</option>
+                                </select>
+                            </div>
+                            <button id="startCampaignBtn" class="primary-btn" style="width: 100%;">Prepare
+                                Campaign</button>
+                        </div>
+                    </div>
+
+                    <div id="campaignProgress" class="card" style="display: none;">
+                        <div class="card-header">
+                            <h3>Campaign Progress</h3>
+                        </div>
+                        <div style="padding: 24px;">
+                            <div class="progress-bar-container"
+                                style="background: #eee; height: 10px; border-radius: 5px; margin-bottom: 12px;">
+                                <div id="campaignProgressBar"
+                                    style="background: var(--primary); height: 100%; width: 0%; border-radius: 5px; transition: width 0.3s;">
+                                </div>
+                            </div>
+                            <p id="campaignStatusText" style="font-size: 13px; color: var(--text-light);">Sent 0 of 0
+                                messages</p>
+                        </div>
+                    </div>
+                </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="leadModal" class="modal">
+        <div class="modal-content">
+            <h3>Add New Lead</h3>
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="newLeadName">
+            </div>
+            <div class="form-group">
+                <label>Phone (+...)</label>
+                <input type="text" id="newLeadPhone">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select id="newLeadStatus">
+                    <option value="New">New</option>
+                    <option value="Warm">Warm</option>
+                    <option value="Hot">Hot</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button id="closeModal" class="text-btn">Cancel</button>
+                <button id="saveLeadBtn" class="primary-btn">Save Lead</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
